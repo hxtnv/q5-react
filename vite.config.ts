@@ -37,7 +37,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === "es" ? "mjs" : "js"}`,
     },
     rollupOptions: {
-      external: ["react", "react-dom", "q5"],
+      external: ["react", "react-dom", "react/jsx-runtime", "q5"],
       output: {
         globals: {
           react: "React",

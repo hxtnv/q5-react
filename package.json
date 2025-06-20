@@ -1,6 +1,6 @@
 {
   "name": "q5-react",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/hxtnv/q5-react.git"
@@ -19,8 +19,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     }
   },
   "scripts": {
