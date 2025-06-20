@@ -35,6 +35,13 @@ const Q5Canvas: React.FC<Q5CanvasProps> = ({
   }, [size]);
 
   useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `.q5-canvas-fullscreen{width:100vw;height:100vh;position:fixed;inset:0;z-index:9999;overflow:hidden}.q5-canvas{position:relative}.q5-canvas canvas,.q5-canvas-fullscreen canvas{position:absolute;inset:0}.q5-canvas .q5-canvas-overlay,.q5-canvas-fullscreen .q5-canvas-overlay{position:absolute;inset:0;z-index:10000;user-select:none;pointer-events:none}`;
+    document.head.appendChild(style);
+    return () => style.remove();
+  }, []);
+
+  useEffect(() => {
     drawRef.current = draw;
   }, [draw]);
 

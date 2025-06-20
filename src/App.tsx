@@ -22,19 +22,25 @@ function App() {
   };
 
   return (
-    <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Increase count
-        </button>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
+      <button onClick={() => setCount((count) => count + 1)}>
+        Increase count
+      </button>
 
-        <p>Current count is: {count}</p>
-      </div>
+      <p>Current count is: {count}</p>
 
       <Q5Canvas sharedState={{ count }} draw={draw} size={500}>
         <div>Overlay element from React</div>
       </Q5Canvas>
-    </>
+    </div>
   );
 }
 

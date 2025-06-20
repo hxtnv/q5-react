@@ -38,7 +38,8 @@ npm install q5-react q5
 
 ```tsx
 import { useState } from "react";
-import Q5Canvas, { SharedState } from "q5-react";
+import Q5Canvas, { type SharedState } from "q5-react";
+import "q5-react/dist/q5-react.css";
 
 function App() {
   const [count, setCount] = useState(0);
