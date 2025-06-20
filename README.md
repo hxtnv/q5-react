@@ -40,7 +40,6 @@ npm install q5-react q5
 import { useState } from "react";
 import q5 from "q5";
 import Q5Canvas, { type SharedState } from "q5-react";
-import "q5-react/dist/q5-react.css";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -63,7 +62,16 @@ function App() {
 
   return (
     <>
-      <div className="card">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
         <button onClick={() => setCount((count) => count + 1)}>
           Increase count
         </button>
