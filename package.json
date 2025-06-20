@@ -1,6 +1,14 @@
 {
   "name": "q5-react",
   "version": "1.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hxtnv/q5-react.git"
+  },
+  "homepage": "https://github.com/hxtnv/q5-react#readme",
+  "bugs": {
+    "url": "https://github.com/hxtnv/q5-react/issues"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -40,5 +48,22 @@
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4"
-  }
+  },
+  "keywords": [
+    "react",
+    "react-q5",
+    "q5",
+    "q5js",
+    "q5xjs",
+    "q5.js",
+    "p5",
+    "p5js",
+    "p5xjs",
+    "p5.js",
+    "canvas",
+    "graphics",
+    "sketch",
+    "visuals",
+    "creative-coding"
+  ]
 }
