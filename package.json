@@ -22,6 +22,9 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
       "default": "./dist/index.mjs"
+    },
+    "./dist/q5-react.css": {
+      "default": "./dist/q5-react.css"
     }
   },
   "scripts": {
