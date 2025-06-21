@@ -13,35 +13,40 @@ const draw = createDraw<MyCountStateType>(
     p.background(0);
     p.fill(255);
 
-    for (let i = 0; i < state.count; i++) {
+    const count = state?.get().count ?? 0;
+    const position = state?.get().position ?? { x: 100, y: 100 };
+
+    for (let i = 0; i < count; i++) {
       p.ellipse(i * 10 + 5, 50, 10, 10);
     }
 
-    const text = `Count is: ${state.count}`;
+    const text = `Count is: ${count}`;
 
     p.textSize(24);
     p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
 
-    p.ellipse(state.position.x, state.position.y, 20, 20);
+    p.ellipse(position.x, position.y, 20, 20);
 
     if (pressedKeys.has("ArrowLeft")) {
-      state.position.x -= 3;
+      position.x -= 3;
     }
     if (pressedKeys.has("ArrowUp")) {
-      state.position.y -= 3;
+      position.y -= 3;
     }
     if (pressedKeys.has("ArrowRight")) {
-      state.position.x += 3;
+      position.x += 3;
     }
     if (pressedKeys.has("ArrowDown")) {
-      state.position.y += 3;
+      position.y += 3;
     }
 
     if (pressedMouseButtons.has(p.LEFT)) {
-      state.position.x -= 3;
+      position.x -= 3;
     } else if (pressedMouseButtons.has(p.RIGHT)) {
-      state.position.x += 3;
+      position.x += 3;
     }
+
+    // state?.set({ position });
   }
 );
 

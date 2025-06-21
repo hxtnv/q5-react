@@ -6,7 +6,11 @@ export interface DrawExtras {
   pressedMouseButtons: Set<number>;
 }
 
-export type DrawFn<T> = (p: q5, state: T, extras: DrawExtras) => void;
+export type DrawFn<T> = (
+  p: q5,
+  state: ReturnType<typeof createCanvasState<T>> | undefined,
+  extras: DrawExtras
+) => void;
 
 export interface Q5CanvasProps<T = any> {
   size?: "fullscreen" | number | [number, number];
