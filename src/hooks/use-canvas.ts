@@ -91,5 +91,27 @@ export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
     };
   }, [containerRef, sizeInternal]);
 
+  useEffect(() => {
+    const handleContextmenu = (e: MouseEvent) => e.preventDefault();
+
+    containerRef.current?.addEventListener("contextmenu", handleContextmenu);
+
+    const canvasElement = containerRef.current?.querySelector("canvas");
+    if (canvasElement) {
+      canvasElement.addEventListener("contextmenu", handleContextmenu);
+    }
+
+    return () => {
+      containerRef.current?.removeEventListener(
+        "contextmenu",
+        handleContextmenu
+      );
+
+      containerRef.current
+        ?.querySelector("canvas")
+        ?.removeEventListener("contextmenu", handleContextmenu);
+    };
+  }, [containerRef]);
+
   return { sketchInstanceRef, containerRef };
 };
