@@ -40,10 +40,8 @@ function App() {
       <p>Current count is: {count}</p>
 
       <Q5Canvas sharedState={{ count }} draw={draw} size={500}>
-        {({ toggleFullscreen, isFullscreen }) => (
-          <button onClick={toggleFullscreen}>
-            {isFullscreen ? "Exit" : "Enter"} Fullscreen
-          </button>
+        {({ toggleFullscreen }) => (
+          <button onClick={toggleFullscreen}>Fullscreen</button>
         )}
       </Q5Canvas>
     </div>

@@ -1,4 +1,4 @@
 declare module "q5" {
-  import p5 from "p5";
-  export = p5;
+  import q5 = require("q5");
+  export = q5;
 }

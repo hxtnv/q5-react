@@ -12,9 +12,7 @@ export interface Q5CanvasProps {
     | React.ReactNode
     | (({
         toggleFullscreen,
-        isFullscreen,
       }: {
         toggleFullscreen: () => void;
-        isFullscreen: boolean;
       }) => React.ReactNode);
 }

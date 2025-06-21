@@ -12,7 +12,13 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "typeRoots": ["types", "node_modules/@types"]
+    "typeRoots": ["types", "node_modules/@types"],
+    "paths": {
+      "q5": ["./src/q5.d.ts"]
+    }
+  },
+  "typeAcquisition": {
+    "include": ["node_modules/q5/index.d.ts"]
   },
   "include": ["src"]
 }
