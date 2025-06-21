@@ -1,6 +1,7 @@
 import q5 from "q5";
 import { useState } from "react";
-import Q5Canvas, { type SharedState } from "./q5-canvas";
+import Q5Canvas from "./q5-canvas";
+import { SharedState } from "./types/q5-canvas";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -39,7 +40,11 @@ function App() {
       <p>Current count is: {count}</p>
 
       <Q5Canvas sharedState={{ count }} draw={draw} size={500}>
-        <div>Overlay element from React</div>
+        {({ toggleFullscreen, isFullscreen }) => (
+          <button onClick={toggleFullscreen}>
+            {isFullscreen ? "Exit" : "Enter"} Fullscreen
+          </button>
+        )}
       </Q5Canvas>
     </div>
   );

@@ -69,5 +69,8 @@
     "sketch",
     "visuals",
     "creative-coding"
-  ]
+  ],
+  "dependencies": {
+    "screenfull": "^6.0.2"
+  }
 }

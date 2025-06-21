@@ -13,8 +13,9 @@
 
 .q5-canvas canvas,
 .q5-canvas-fullscreen canvas {
-  position: absolute;
-  inset: 0;
+  /* position: absolute;
+  inset: 0; */
+  display: block;
 }
 
 .q5-canvas-fullscreen .q5-canvas-overlay,
@@ -22,6 +23,6 @@
   position: absolute;
   inset: 0;
   z-index: 10000;
-  user-select: none;
-  pointer-events: none;
+  /* user-select: none; */
+  /* pointer-events: none; */
 }
