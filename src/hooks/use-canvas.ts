@@ -1,33 +1,23 @@
 import { useEffect, useRef } from "react";
 import q5 from "q5";
-import type { SharedState, Q5CanvasProps } from "../types/q5-canvas";
+import type { Q5CanvasProps } from "../types/q5-canvas";
 
 interface UseCanvasProps {
   draw: Q5CanvasProps["draw"];
-  sharedState?: SharedState;
+  state?: Q5CanvasProps["state"];
   sizeInternal: Q5CanvasProps["size"];
 }
 
 const DEFAULT_CANVAS_SIZE = 500;
 
-export const useCanvas = ({
-  draw,
-  sharedState,
-  sizeInternal,
-}: UseCanvasProps) => {
+export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sketchInstanceRef = useRef<typeof q5 | null>(null);
-  const stateRef = useRef<SharedState | null>(sharedState);
   const drawRef = useRef(draw);
 
-  // Update refs when props change
   useEffect(() => {
     drawRef.current = draw;
   }, [draw]);
-
-  useEffect(() => {
-    stateRef.current = sharedState;
-  }, [sharedState]);
 
   useEffect(() => {
     if (sketchInstanceRef.current) {
@@ -41,6 +31,9 @@ export const useCanvas = ({
       if (sketchInstanceRef.current || !containerRef.current) return;
 
       const sketch = (p: q5) => {
+        const pressedKeys = new Set<string>();
+        const pressedMouseButtons = new Set<number>();
+
         p.setup = () => {
           const sizeCanvas =
             sizeInternal === "fullscreen"
@@ -56,13 +49,32 @@ export const useCanvas = ({
         };
 
         p.draw = () => {
-          drawRef.current?.(p, stateRef.current ?? {});
+          drawRef.current?.(p, state?.get() ?? {}, {
+            pressedKeys,
+            pressedMouseButtons,
+          });
         };
 
         p.windowResized = () => {
           if (sizeInternal === "fullscreen") {
             p.resizeCanvas(p.windowWidth, p.windowHeight);
           }
+        };
+
+        p.keyPressed = () => {
+          pressedKeys.add(p.key);
+        };
+
+        p.keyReleased = () => {
+          pressedKeys.delete(p.key);
+        };
+
+        p.mousePressed = () => {
+          pressedMouseButtons.add(p.mouseButton);
+        };
+
+        p.mouseReleased = () => {
+          pressedMouseButtons.delete(p.mouseButton);
         };
       };
 
@@ -71,12 +83,35 @@ export const useCanvas = ({
 
     return () => {
       clearTimeout(timeoutId);
+
       if (sketchInstanceRef.current) {
         sketchInstanceRef.current.remove();
         sketchInstanceRef.current = null;
       }
     };
   }, [containerRef, sizeInternal]);
+
+  useEffect(() => {
+    const handleContextmenu = (e: MouseEvent) => e.preventDefault();
+
+    containerRef.current?.addEventListener("contextmenu", handleContextmenu);
+
+    const canvasElement = containerRef.current?.querySelector("canvas");
+    if (canvasElement) {
+      canvasElement.addEventListener("contextmenu", handleContextmenu);
+    }
+
+    return () => {
+      containerRef.current?.removeEventListener(
+        "contextmenu",
+        handleContextmenu
+      );
+
+      containerRef.current
+        ?.querySelector("canvas")
+        ?.removeEventListener("contextmenu", handleContextmenu);
+    };
+  }, [containerRef]);
 
   return { sketchInstanceRef, containerRef };
 };

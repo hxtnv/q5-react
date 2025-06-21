@@ -31,7 +31,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: "src/q5-canvas.tsx",
+      entry: "src/index.ts",
       name: "Q5React",
       formats: ["es", "cjs"],
       fileName: (format) => `index.${format === "es" ? "mjs" : "js"}`,
@@ -44,6 +44,7 @@ export default defineConfig({
           "react-dom": "ReactDOM",
           q5: "q5",
         },
+        exports: "named",
       },
     },
   },
