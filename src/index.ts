@@ -4,4 +4,4 @@ export default Q5Canvas;
 
 export * from "./hooks/use-canvas-state";
 export * from "./types/q5-canvas";
-export const createDraw = (fn: DrawFn) => fn;
+export const createDraw = <T>(fn: DrawFn<T>) => fn;

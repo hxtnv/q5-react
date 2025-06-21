@@ -8,39 +8,41 @@ type MyCountStateType = {
   position: { x: number; y: number };
 };
 
-const draw = createDraw((p, state, { pressedKeys, pressedMouseButtons }) => {
-  p.background(0);
-  p.fill(255);
+const draw = createDraw<MyCountStateType>(
+  (p, state, { pressedKeys, pressedMouseButtons }) => {
+    p.background(0);
+    p.fill(255);
 
-  for (let i = 0; i < state.count; i++) {
-    p.ellipse(i * 10 + 5, 50, 10, 10);
-  }
+    for (let i = 0; i < state.count; i++) {
+      p.ellipse(i * 10 + 5, 50, 10, 10);
+    }
 
-  const text = `Count is: ${state.count}`;
+    const text = `Count is: ${state.count}`;
 
-  p.textSize(24);
-  p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
+    p.textSize(24);
+    p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
 
-  p.ellipse(state.position.x, state.position.y, 20, 20);
+    p.ellipse(state.position.x, state.position.y, 20, 20);
 
-  if (pressedKeys.has("ArrowLeft")) {
-    state.position.x -= 3;
-  }
-  if (pressedKeys.has("ArrowUp")) {
-    state.position.y -= 3;
-  }
-  if (pressedKeys.has("ArrowRight")) {
-    state.position.x += 3;
-  }
-  if (pressedKeys.has("ArrowDown")) {
-    state.position.y += 3;
-  }
+    if (pressedKeys.has("ArrowLeft")) {
+      state.position.x -= 3;
+    }
+    if (pressedKeys.has("ArrowUp")) {
+      state.position.y -= 3;
+    }
+    if (pressedKeys.has("ArrowRight")) {
+      state.position.x += 3;
+    }
+    if (pressedKeys.has("ArrowDown")) {
+      state.position.y += 3;
+    }
 
-  if (pressedMouseButtons.has(p.LEFT)) {
-    state.position.x += 3;
-    state.position.y += 3;
+    if (pressedMouseButtons.has(p.LEFT)) {
+      state.position.x += 3;
+      state.position.y += 3;
+    }
   }
-});
+);
 
 function App() {
   const [test, setTest] = useState(0);
