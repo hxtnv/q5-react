@@ -1,6 +1,6 @@
 # 🎨 q5-react
 
-> Minimal React wrapper for [q5.js](https://github.com/q5js/q5.js) with
+> Minimal React wrapper for [q5.js](https://github.com/q5js/q5.js)
 
 Build smooth, high-perf 2D games and visuals in React using q5.js (a blazing fast p5.js alternative).  
 This package gives you a clean, stable `<Q5Canvas />` component with full control over drawing + real-time state.
@@ -134,4 +134,5 @@ MIT — do whatever you want, just don't sell it as your own 😎
 ## ✨ Authors
 
 [@hxtnv](https://github.com/hxtnv) - creator of q5-react
+
 [@quinton-ashley](https://github.com/quinton-ashley) - original creator of q5.js

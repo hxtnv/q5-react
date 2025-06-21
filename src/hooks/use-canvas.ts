@@ -1,33 +1,23 @@
 import { useEffect, useRef } from "react";
 import q5 from "q5";
-import type { SharedState, Q5CanvasProps } from "../types/q5-canvas";
+import type { Q5CanvasProps } from "../types/q5-canvas";
 
 interface UseCanvasProps {
   draw: Q5CanvasProps["draw"];
-  sharedState?: SharedState;
+  state?: Q5CanvasProps["state"];
   sizeInternal: Q5CanvasProps["size"];
 }
 
 const DEFAULT_CANVAS_SIZE = 500;
 
-export const useCanvas = ({
-  draw,
-  sharedState,
-  sizeInternal,
-}: UseCanvasProps) => {
+export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sketchInstanceRef = useRef<typeof q5 | null>(null);
-  const stateRef = useRef<SharedState | null>(sharedState);
   const drawRef = useRef(draw);
 
-  // Update refs when props change
   useEffect(() => {
     drawRef.current = draw;
   }, [draw]);
-
-  useEffect(() => {
-    stateRef.current = sharedState;
-  }, [sharedState]);
 
   useEffect(() => {
     if (sketchInstanceRef.current) {
@@ -56,7 +46,7 @@ export const useCanvas = ({
         };
 
         p.draw = () => {
-          drawRef.current?.(p, stateRef.current ?? {});
+          drawRef.current?.(p, state?.get() ?? {});
         };
 
         p.windowResized = () => {
@@ -71,6 +61,7 @@ export const useCanvas = ({
 
     return () => {
       clearTimeout(timeoutId);
+
       if (sketchInstanceRef.current) {
         sketchInstanceRef.current.remove();
         sketchInstanceRef.current = null;

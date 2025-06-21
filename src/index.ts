@@ -1,2 +1,3 @@
 export type { SharedState, Q5CanvasProps } from "./types/q5-canvas";
 export { default } from "./q5-canvas";
+export { createCanvasState } from "./lib/canvas-state";

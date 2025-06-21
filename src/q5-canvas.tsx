@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCanvasSize } from "./hooks/use-canvas-size";
 import { useCanvas } from "./hooks/use-canvas";
 import type { Q5CanvasProps } from "./types/q5-canvas";
@@ -7,14 +7,14 @@ import "./q5-canvas.css";
 const Q5Canvas: React.FC<Q5CanvasProps> = ({
   size = 500,
   draw,
-  sharedState,
+  state,
   children,
 }) => {
   const { sizeInternal, toggleFullscreen } = useCanvasSize({ size });
 
   const { containerRef } = useCanvas({
     draw,
-    sharedState,
+    state,
     sizeInternal,
   });
 
