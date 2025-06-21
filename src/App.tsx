@@ -38,8 +38,9 @@ const draw = createDraw<MyCountStateType>(
     }
 
     if (pressedMouseButtons.has(p.LEFT)) {
+      state.position.x -= 3;
+    } else if (pressedMouseButtons.has(p.RIGHT)) {
       state.position.x += 3;
-      state.position.y += 3;
     }
   }
 );
