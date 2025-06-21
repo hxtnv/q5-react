@@ -1,16 +1,18 @@
 import { useMemo } from "react";
 import { createCanvasState } from "../lib/canvas-state";
 
-let _state: ReturnType<typeof createCanvasState> | null = null;
+const globalStates = new Map<string, any>();
 
 export const useCanvasState = <T extends object>(
+  id: string,
   initial: T extends object ? T : never
 ) => {
   if (import.meta.hot) {
-    if (!_state) _state = createCanvasState(initial);
-    return _state;
+    if (!globalStates.has(id)) {
+      globalStates.set(id, createCanvasState(initial));
+    }
+    return globalStates.get(id);
   }
 
   return useMemo(() => createCanvasState(initial), []);
-  //   return useMemo(() => createCanvasState(initial), []);
 };

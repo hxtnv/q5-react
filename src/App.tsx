@@ -1,7 +1,7 @@
 import q5 from "q5";
 import Q5Canvas from "./q5-canvas";
 import { SharedState } from "./types/q5-canvas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCanvasState } from "./hooks/use-canvas-state";
 
 const draw = (p: q5, state: SharedState) => {
@@ -22,7 +22,15 @@ const draw = (p: q5, state: SharedState) => {
 
 function App() {
   const [test, setTest] = useState(0);
-  const canvasState = useCanvasState({ count: 0 });
+  const canvasState = useCanvasState("my-count-state", { count: 0 });
+
+  useEffect(() => {
+    const intrv = setInterval(() => {
+      canvasState.set({ count: canvasState.get().count + 1 });
+    }, 1000);
+
+    return () => clearInterval(intrv);
+  }, [canvasState]);
 
   return (
     <div
