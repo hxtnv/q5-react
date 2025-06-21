@@ -1,13 +1,13 @@
 type Subscriber<T> = (state: T) => void;
 
-export function createCanvasState<T>(initial: T extends object ? T : never) {
-  let state: T extends object ? T : never = structuredClone(initial);
-  const subs = new Set<Subscriber<T extends object ? T : never>>();
+export function createCanvasState<T>(initial: T) {
+  let state: T = structuredClone(initial);
+  const subs = new Set<Subscriber<T>>();
 
   const get = () => state;
 
   const set = (partial: Partial<T>) => {
-    Object.assign(state, partial);
+    state = { ...state, ...partial };
 
     subs.forEach((cb) => cb(state));
   };

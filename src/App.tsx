@@ -3,6 +3,11 @@ import { useState } from "react";
 import { useCanvasState } from "./hooks/use-canvas-state";
 import { createDraw } from ".";
 
+type MyCountStateType = {
+  count: number;
+  position: { x: number; y: number };
+};
+
 const draw = createDraw((p, state, { pressedKeys, pressedMouseButtons }) => {
   p.background(0);
   p.fill(255);
@@ -40,7 +45,7 @@ const draw = createDraw((p, state, { pressedKeys, pressedMouseButtons }) => {
 function App() {
   const [test, setTest] = useState(0);
 
-  const canvasState = useCanvasState("my-count-state", {
+  const canvasState = useCanvasState<MyCountStateType>("my-count-state", {
     count: 0,
     position: { x: 100, y: 100 },
   });
