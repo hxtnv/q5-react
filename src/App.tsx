@@ -1,12 +1,12 @@
 import q5 from "q5";
 import Q5Canvas from "./q5-canvas";
 import { SharedState } from "./types/q5-canvas";
-import { createCanvasState } from "./lib/canvas-state";
+import { useState } from "react";
+import { useCanvasState } from "./hooks/use-canvas-state";
 
 function App() {
-  const canvasState = createCanvasState({ count: 0, ballX: 100 });
-
-  console.log("render", canvasState);
+  const [test, setTest] = useState(0);
+  const canvasState = useCanvasState({ count: 0 });
 
   const draw = (p: q5, state: SharedState) => {
     p.background(0);
@@ -33,15 +33,16 @@ function App() {
         justifyContent: "center",
         height: "100vh",
         width: "100vw",
+        gap: "20px",
       }}
     >
       <button
         onClick={() => canvasState.set({ count: canvasState.get().count + 1 })}
       >
-        Add
+        Increase count
       </button>
 
-      <p>Current count is: {canvasState.get().count}</p>
+      <button onClick={() => setTest(test + 1)}>Increase test {test}</button>
 
       <Q5Canvas state={canvasState} draw={draw} size={500}>
         {({ toggleFullscreen }) => (
