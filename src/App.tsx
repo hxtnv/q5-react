@@ -1,10 +1,9 @@
-import q5 from "q5";
 import Q5Canvas from "./q5-canvas";
-import { SharedState } from "./types/q5-canvas";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCanvasState } from "./hooks/use-canvas-state";
+import { createDraw } from ".";
 
-const draw = (p: q5, state: SharedState) => {
+const draw = createDraw((p, state, { pressedKeys, pressedMouseButtons }) => {
   p.background(0);
   p.fill(255);
 
@@ -17,20 +16,34 @@ const draw = (p: q5, state: SharedState) => {
   p.textSize(24);
   p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
 
-  p.ellipse(p.mouseX, p.mouseY, 20, 20);
-};
+  p.ellipse(state.position.x, state.position.y, 20, 20);
+
+  if (pressedKeys.has("ArrowLeft")) {
+    state.position.x -= 3;
+  }
+  if (pressedKeys.has("ArrowUp")) {
+    state.position.y -= 3;
+  }
+  if (pressedKeys.has("ArrowRight")) {
+    state.position.x += 3;
+  }
+  if (pressedKeys.has("ArrowDown")) {
+    state.position.y += 3;
+  }
+
+  if (pressedMouseButtons.has(p.LEFT)) {
+    state.position.x += 3;
+    state.position.y += 3;
+  }
+});
 
 function App() {
   const [test, setTest] = useState(0);
-  const canvasState = useCanvasState("my-count-state", { count: 0 });
 
-  useEffect(() => {
-    const intrv = setInterval(() => {
-      canvasState.set({ count: canvasState.get().count + 1 });
-    }, 1000);
-
-    return () => clearInterval(intrv);
-  }, [canvasState]);
+  const canvasState = useCanvasState("my-count-state", {
+    count: 0,
+    position: { x: 100, y: 100 },
+  });
 
   return (
     <div

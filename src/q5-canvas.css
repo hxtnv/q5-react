@@ -3,7 +3,7 @@
   height: 100vh;
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 100;
   overflow: hidden;
 }
 
@@ -20,5 +20,11 @@
 .q5-canvas .q5-canvas-overlay {
   position: absolute;
   inset: 0;
-  z-index: 10000;
+  z-index: 101;
+  pointer-events: none;
+}
+
+.q5-canvas-fullscreen .q5-canvas-overlay *,
+.q5-canvas .q5-canvas-overlay * {
+  pointer-events: initial;
 }

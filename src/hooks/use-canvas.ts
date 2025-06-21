@@ -31,6 +31,9 @@ export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
       if (sketchInstanceRef.current || !containerRef.current) return;
 
       const sketch = (p: q5) => {
+        const pressedKeys = new Set<string>();
+        const pressedMouseButtons = new Set<number>();
+
         p.setup = () => {
           const sizeCanvas =
             sizeInternal === "fullscreen"
@@ -46,13 +49,32 @@ export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
         };
 
         p.draw = () => {
-          drawRef.current?.(p, state?.get() ?? {});
+          drawRef.current?.(p, state?.get() ?? {}, {
+            pressedKeys,
+            pressedMouseButtons,
+          });
         };
 
         p.windowResized = () => {
           if (sizeInternal === "fullscreen") {
             p.resizeCanvas(p.windowWidth, p.windowHeight);
           }
+        };
+
+        p.keyPressed = () => {
+          pressedKeys.add(p.key);
+        };
+
+        p.keyReleased = () => {
+          pressedKeys.delete(p.key);
+        };
+
+        p.mousePressed = () => {
+          pressedMouseButtons.add(p.mouseButton);
+        };
+
+        p.mouseReleased = () => {
+          pressedMouseButtons.delete(p.mouseButton);
         };
       };
 
