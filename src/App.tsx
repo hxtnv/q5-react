@@ -15,12 +15,12 @@ function App() {
       count: 0,
       position: { x: 100, y: 100 },
     },
-    (p: any, state: any, { pressedKeys, pressedMouseButtons }: any) => {
+    (p, state, { pressedKeys, pressedMouseButtons }) => {
       p.background(0);
       p.fill(255);
 
-      const count = state?.get().count ?? 0;
-      const position = state?.get().position ?? { x: 100, y: 100 };
+      const count = state.get().count;
+      const position = state.get().position;
 
       for (let i = 0; i < count; i++) {
         p.ellipse(i * 10 + 5, 50, 10, 10);
@@ -34,22 +34,34 @@ function App() {
       p.ellipse(position.x, position.y, 20, 20);
 
       if (pressedKeys.has("ArrowLeft")) {
-        position.x -= 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x - 3, y: prev.position.y },
+        }));
       }
       if (pressedKeys.has("ArrowUp")) {
-        position.y -= 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x, y: prev.position.y - 3 },
+        }));
       }
       if (pressedKeys.has("ArrowRight")) {
-        position.x += 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x + 3, y: prev.position.y },
+        }));
       }
       if (pressedKeys.has("ArrowDown")) {
-        position.y += 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x, y: prev.position.y + 3 },
+        }));
       }
 
       if (pressedMouseButtons.has(p.LEFT)) {
-        position.x -= 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x - 3, y: prev.position.y },
+        }));
       } else if (pressedMouseButtons.has(p.RIGHT)) {
-        position.x += 3;
+        state.set((prev) => ({
+          position: { x: prev.position.x + 3, y: prev.position.y },
+        }));
       }
     }
   );

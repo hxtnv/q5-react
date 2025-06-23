@@ -3,7 +3,7 @@ import { createCanvasState } from "../lib/canvas-state";
 
 type CanvasState<T> = {
   get: () => T;
-  set: (partial: Partial<T>) => void;
+  set: (partialOrUpdater: Partial<T> | ((prevState: T) => Partial<T>)) => void;
   subscribe: (cb: (state: T) => void) => () => boolean;
 };
 
