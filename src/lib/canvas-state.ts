@@ -6,7 +6,11 @@ export function createCanvasState<T>(initial: T) {
 
   const get = () => state;
 
-  const set = (partial: Partial<T>) => {
+  const set = (partialOrUpdater: Partial<T> | ((prevState: T) => Partial<T>)) => {
+    const partial = typeof partialOrUpdater === "function"
+      ? partialOrUpdater(state)
+      : partialOrUpdater;
+      
     state = { ...state, ...partial };
 
     subs.forEach((cb) => cb(state));

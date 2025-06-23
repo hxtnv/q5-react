@@ -1,23 +1,17 @@
 import { useEffect, useRef } from "react";
 import q5 from "q5";
-import type { Q5CanvasProps } from "../types/q5-canvas";
-
-interface UseCanvasProps {
-  draw: Q5CanvasProps["draw"];
-  state?: Q5CanvasProps["state"];
-  sizeInternal: Q5CanvasProps["size"];
-}
+import type { UseCanvasProps } from "../types/q5-canvas";
 
 const DEFAULT_CANVAS_SIZE = 500;
 
-export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
+export const useCanvas = ({ canvas, sizeInternal }: UseCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sketchInstanceRef = useRef<typeof q5 | null>(null);
-  const drawRef = useRef(draw);
+  const drawRef = useRef(canvas?.draw);
 
   useEffect(() => {
-    drawRef.current = draw;
-  }, [draw]);
+    drawRef.current = canvas?.draw;
+  }, [canvas]);
 
   useEffect(() => {
     if (sketchInstanceRef.current) {
@@ -49,7 +43,7 @@ export const useCanvas = ({ draw, state, sizeInternal }: UseCanvasProps) => {
         };
 
         p.draw = () => {
-          drawRef.current?.(p, state?.get() ?? {}, {
+          drawRef.current?.(p, canvas.state, {
             pressedKeys,
             pressedMouseButtons,
           });

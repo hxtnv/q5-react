@@ -6,14 +6,12 @@ import "./q5-canvas.css";
 
 const Q5Canvas: React.FC<Q5CanvasProps> = ({
   size = 500,
-  draw,
-  state,
+  canvas,
   children,
 }) => {
   const { sizeInternal, toggleFullscreen } = useCanvasSize({ size });
   const { containerRef } = useCanvas({
-    draw,
-    state,
+    canvas,
     sizeInternal,
   });
 

@@ -1,7 +1,5 @@
-import { DrawFn } from "./types/q5-canvas";
 import Q5Canvas from "./q5-canvas";
+import { useCreateCanvas } from "./hooks/use-create-canvas";
+export * as types from "./types/q5-canvas";
 export default Q5Canvas;
-
-export * from "./hooks/use-canvas-state";
-export * from "./types/q5-canvas";
-export const createDraw = <T>(fn: DrawFn<T>) => fn;
+export { useCreateCanvas };
