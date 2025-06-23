@@ -12,8 +12,8 @@ This package gives you a clean, stable `<Q5Canvas />` component with full contro
 - ✅ Fullscreen support
 - ✅ Easy overlay support
 - ✅ Share real-time game state without re-rendering
-- ✅ Type-safe state management with `useCanvasState`
-- ✅ Strongly typed drawing functions with `createDraw`
+- ✅ Type-safe state management with `useCreateCanvas`
+- ✅ Strongly typed drawing functions with React-like state updates
 
 ## 🧠 Why?
 
@@ -30,23 +30,26 @@ npm install q5-react q5
 ## 🖥️ How to use
 
 ```tsx
-import Q5Canvas, { createDraw } from "q5-react";
+import Q5Canvas, { useCreateCanvas } from "q5-react";
 
-const draw = createDraw((p) => {
-  p.background(0);
+function MyComponent() {
+  const myCanvas = useCreateCanvas(
+    {}, // initial state (empty in this case)
+    (p) => {
+      p.background(0);
+      p.fill(255);
+      p.ellipse(p.mouseX, p.mouseY, 20, 20);
+    }
+  );
 
-  p.fill(255);
-  p.ellipse(p.mouseX, p.mouseY, 20, 20);
-});
-
-// in your component
-<Q5Canvas draw={draw} size={500} />;
+  return <Q5Canvas canvas={myCanvas} size={500} />;
+}
 ```
 
 ## 💻 Full example
 
 ```tsx
-import Q5Canvas, { useCanvasState, createDraw } from "q5-react";
+import Q5Canvas, { useCreateCanvas } from "q5-react";
 
 // define your state type
 type MyCountStateType = {
@@ -54,60 +57,93 @@ type MyCountStateType = {
   position: { x: number; y: number };
 };
 
-const draw = createDraw<MyCountStateType>(
-  (p, state, { pressedKeys, pressedMouseButtons }) => {
-    p.background(0);
-    p.fill(255);
-
-    for (let i = 0; i < state.count; i++) {
-      p.ellipse(i * 10 + 5, 50, 10, 10);
-    }
-
-    const text = `Count is: ${state.count}`;
-
-    p.textSize(24);
-    p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
-
-    p.ellipse(state.position.x, state.position.y, 20, 20);
-
-    // handle keyboard input
-    if (pressedKeys.has("ArrowLeft")) {
-      state.position.x -= 3;
-    }
-    if (pressedKeys.has("ArrowUp")) {
-      state.position.y -= 3;
-    }
-    if (pressedKeys.has("ArrowRight")) {
-      state.position.x += 3;
-    }
-    if (pressedKeys.has("ArrowDown")) {
-      state.position.y += 3;
-    }
-
-    // handle mouse input
-    if (pressedMouseButtons.has(p.LEFT)) {
-      state.position.x -= 3;
-    } else if (pressedMouseButtons.has(p.RIGHT)) {
-      state.position.x += 3;
-    }
-  }
-);
-
 function App() {
-  const canvasState = useCanvasState<MyCountStateType>("my-count-state", {
-    count: 0,
-    position: { x: 100, y: 100 },
-  });
+  const myCanvas = useCreateCanvas<MyCountStateType>(
+    // define initial state
+    {
+      count: 0,
+      position: { x: 100, y: 100 },
+    },
+    // define your draw function
+    (p, state, { pressedKeys, pressedMouseButtons }) => {
+      p.background(0);
+      p.fill(255);
+
+      for (let i = 0; i < state.get().count; i++) {
+        p.ellipse(i * 10 + 5, 50, 10, 10);
+      }
+
+      const text = `Count is: ${state.get().count}`;
+
+      p.textSize(24);
+      p.text(text, p.width / 2 - p.textWidth(text) / 2, p.height / 2);
+
+      p.ellipse(state.get().position.x, state.get().position.y, 20, 20);
+
+      // handle keyboard input
+      if (pressedKeys.has("ArrowLeft")) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x - 3,
+            y: prev.position.y,
+          },
+        }));
+      }
+      if (pressedKeys.has("ArrowUp")) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x,
+            y: prev.position.y - 3,
+          },
+        }));
+      }
+      if (pressedKeys.has("ArrowRight")) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x + 3,
+            y: prev.position.y,
+          },
+        }));
+      }
+      if (pressedKeys.has("ArrowDown")) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x,
+            y: prev.position.y + 3,
+          },
+        }));
+      }
+
+      // handle mouse input
+      if (pressedMouseButtons.has(p.LEFT)) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x - 3,
+            y: prev.position.y,
+          },
+        }));
+      } else if (pressedMouseButtons.has(p.RIGHT)) {
+        state.set((prev) => ({
+          position: {
+            x: prev.position.x + 3,
+            y: prev.position.y,
+          },
+        }));
+      }
+    }
+  );
 
   return (
     <div>
       <button
-        onClick={() => canvasState.set({ count: canvasState.get().count + 1 })}
+        onClick={() =>
+          myCanvas.state.set((prev) => ({ count: prev.count + 1 }))
+        }
       >
         Increase count
       </button>
 
-      <Q5Canvas state={canvasState} draw={draw} size={500}>
+      <Q5Canvas canvas={myCanvas} size={500}>
         {({ toggleFullscreen }) => (
           <button onClick={toggleFullscreen}>Fullscreen</button>
         )}
@@ -123,44 +159,44 @@ export default App;
 
 | Prop       | Type                                                               | Description                                                                   | Default     |
 | ---------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ----------- |
-| `draw`     | `DrawFn<T>` from `createDraw<T>`                                   | Your type-safe drawing function                                               | `undefined` |
-| `state`    | `CanvasState<T>` from `useCanvasState<T>`                          | Optional canvas state to use with the draw function                           | `undefined` |
+| `canvas`   | `CreateCanvasProps<T>` from `useCreateCanvas<T>`                   | Canvas object with draw function and state                                    | Required    |
 | `size`     | `"fullscreen"` or `number` or `[number, number]`                   | Canvas size. "fullscreen" will take up the entire page                        | `500`       |
 | `children` | `React.ReactNode` or `(({ toggleFullscreen }) => React.ReactNode)` | HTML element to overlay on top of the canvas. Useful for buttons, menus, etc. | `undefined` |
 
 ## 🤜 Tips
 
-- Use `useCanvasState<T>` to create type-safe, persistent state that survives hot reloads
-- Access state with `canvasState.get()` and update it with `canvasState.set()`
-- Subscribe to state changes with `canvasState.subscribe(callback)`
-- Use `createDraw<T>` to create type-safe drawing functions with proper typing
+- Use `useCreateCanvas<T>` to create a canvas with type-safe, persistent state that survives hot reloads
+- Access state with `canvas.state.get()` and update it with `canvas.state.set()`
+- Update state with React-like updater functions: `state.set(prev => ({ ...prev, count: prev.count + 1 }))`
+- Subscribe to state changes with `canvas.state.subscribe(callback)`
 - The draw function provides access to `pressedKeys` and `pressedMouseButtons` for input handling
 - Resize support is automatic when using `size="fullscreen"`
 
 ## 👨‍💻 API Reference
 
-### `useCanvasState<T>`
+### `useCreateCanvas<T>`
 
 ```tsx
-const canvasState = useCanvasState<StateType>(id: string, initial: T): CanvasState<T>
+const canvas = useCreateCanvas<StateType>(
+  initialState: T | (() => T),
+  draw: (p: q5, state: CanvasState<T>, extras: DrawExtras) => void
+): CreateCanvasProps<T>
 ```
 
-Creates a persistent state container that survives hot reloads. Returns an object with the following methods:
+Creates a canvas object with a persistent state container and draw function. Returns an object with:
 
-- `get(): T` - Returns the current state
-- `set(partial: Partial<T>): void` - Updates the state (merges with current state)
-- `subscribe(callback: (state: T) => void): () => boolean` - Subscribe to state changes, returns an unsubscribe function
+- `draw` - Your drawing function
+- `state` - A state object with the following methods:
+  - `get(): T` - Returns the current state
+  - `set(partialOrUpdater: Partial<T> | ((prevState: T) => Partial<T>))` - Updates the state using either a partial object or an updater function
+  - `subscribe(callback: (state: T) => void): () => boolean` - Subscribe to state changes, returns an unsubscribe function
 
-### `createDraw<T>`
+### Draw Function
 
-```tsx
-const draw = createDraw<T>((p: q5, state: T, extras: DrawExtras) => void): DrawFn<T>
-```
-
-Creates a type-safe drawing function for use with Q5Canvas. The function receives:
+The draw function passed to `useCreateCanvas` receives:
 
 - `p: q5` - The q5 instance for drawing
-- `state: T` - Your typed state
+- `state: CanvasState<T>` - Your typed state with get/set/subscribe methods
 - `extras: DrawExtras` - Extra utilities including:
   - `pressedKeys: Set<string>` - Set of currently pressed keys
   - `pressedMouseButtons: Set<number>` - Set of currently pressed mouse buttons
