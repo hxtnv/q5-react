@@ -43,7 +43,7 @@ export const useCanvas = ({ canvas, sizeInternal }: UseCanvasProps) => {
         };
 
         p.draw = () => {
-          drawRef.current?.(p, canvas?.state, {
+          drawRef.current?.(p, canvas.state, {
             pressedKeys,
             pressedMouseButtons,
           });

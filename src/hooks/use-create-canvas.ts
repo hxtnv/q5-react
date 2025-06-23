@@ -1,5 +1,5 @@
 import { DrawFn } from "../types/q5-canvas";
-import { useCanvasState } from "../hooks/use-canvas-state";
+import { useCanvasState } from "./use-canvas-state";
 import { useMemo } from "react";
 
 function isInitialStateFunction<T>(value: T | (() => T)): value is () => T {

@@ -1,6 +1,6 @@
 import Q5Canvas from "./q5-canvas";
 import { useState } from "react";
-import { useCreateCanvas } from "./lib/canvas";
+import { useCreateCanvas } from "./hooks/use-create-canvas";
 
 type MyCountStateType = {
   count: number;
