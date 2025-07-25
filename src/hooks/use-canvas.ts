@@ -57,18 +57,32 @@ export const useCanvas = ({ canvas, sizeInternal }: UseCanvasProps) => {
 
         p.keyPressed = () => {
           pressedKeys.add(p.key);
+
+          canvas?.events?.keyPressed?.(p.key);
         };
 
         p.keyReleased = () => {
           pressedKeys.delete(p.key);
+
+          canvas?.events?.keyReleased?.(p.key);
         };
 
         p.mousePressed = () => {
           pressedMouseButtons.add(p.mouseButton);
+
+          canvas?.events?.mousePressed?.(p.mouseButton, {
+            x: p.mouseX,
+            y: p.mouseY,
+          });
         };
 
         p.mouseReleased = () => {
           pressedMouseButtons.delete(p.mouseButton);
+
+          canvas?.events?.mouseReleased?.(p.mouseButton, {
+            x: p.mouseX,
+            y: p.mouseY,
+          });
         };
       };
 

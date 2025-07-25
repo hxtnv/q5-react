@@ -9,6 +9,17 @@ export interface DrawExtras {
 export interface CreateCanvasProps<T> {
   draw: DrawFn<T>;
   state: ReturnType<typeof createCanvasState<T>>;
+  events?: {
+    keyPressed?: (key: string) => void;
+    keyReleased?: (key: string) => void;
+    mousePressed?: (button: number, position: { x: number; y: number }) => void;
+    mouseReleased?: (
+      button: number,
+      position: { x: number; y: number }
+    ) => void;
+    mouseWheel?: (x: number, y: number) => void;
+    windowResized?: () => void;
+  };
 }
 
 export type DrawFn<T> = (

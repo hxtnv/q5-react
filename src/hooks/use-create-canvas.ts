@@ -1,4 +1,4 @@
-import { DrawFn } from "../types/q5-canvas";
+import { CreateCanvasProps } from "../types/q5-canvas";
 import { useCanvasState } from "./use-canvas-state";
 import { useMemo } from "react";
 
@@ -8,7 +8,8 @@ function isInitialStateFunction<T>(value: T | (() => T)): value is () => T {
 
 export const useCreateCanvas = <T>(
   initialState: T | (() => T),
-  draw: DrawFn<T>
+  draw: CreateCanvasProps<T>["draw"],
+  events?: CreateCanvasProps<T>["events"]
 ) => {
   const id = useMemo(() => crypto.randomUUID(), []);
 
@@ -24,7 +25,8 @@ export const useCreateCanvas = <T>(
     () => ({
       draw,
       state,
+      events,
     }),
-    [draw, state]
+    [draw, state, events]
   );
 };

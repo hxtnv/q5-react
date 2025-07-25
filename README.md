@@ -34,11 +34,14 @@ import Q5Canvas, { useCreateCanvas } from "q5-react";
 
 function MyComponent() {
   const myCanvas = useCreateCanvas(
-    {}, // initial state (empty in this case)
-    (p) => {
+    { myMessage: "Hello, world!" }, // initial state
+    (p, state) => {
       p.background(0);
       p.fill(255);
       p.ellipse(p.mouseX, p.mouseY, 20, 20);
+
+      p.textSize(24);
+      p.text(state.get().myMessage, 100, 100);
     }
   );
 
@@ -130,6 +133,11 @@ function App() {
           },
         }));
       }
+    },
+    {
+      keyPressed: (key) => {
+        console.log(`Key "${key}" has been pressed`);
+      },
     }
   );
 
@@ -200,6 +208,11 @@ The draw function passed to `useCreateCanvas` receives:
 - `extras: DrawExtras` - Extra utilities including:
   - `pressedKeys: Set<string>` - Set of currently pressed keys
   - `pressedMouseButtons: Set<number>` - Set of currently pressed mouse buttons
+  - `events: Events` - Events object with the following methods:
+    - `keyPressed(key: string): void` - Triggered when a key is pressed
+    - `keyReleased(key: string): void` - Triggered when a key is released
+    - `mousePressed(button: number, position: { x: number; y: number }): void` - Triggered when a mouse button is pressed
+    - `mouseReleased(button: number, position: { x: number; y: number }): void` - Triggered when a mouse button is released
 
 ## ⚠️ Cannot use namespace 'q5' as a type.
 

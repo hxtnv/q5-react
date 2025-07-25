@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCanvasSize } from "./hooks/use-canvas-size";
 import { useCanvas } from "./hooks/use-canvas";
 import type { Q5CanvasProps } from "./types/q5-canvas";
