@@ -63,7 +63,8 @@ function App() {
           position: { x: prev.position.x + 3, y: prev.position.y },
         }));
       }
-    }
+    },
+    { keyPressed: (key: string) => alert(key) }
   );
 
   return (
